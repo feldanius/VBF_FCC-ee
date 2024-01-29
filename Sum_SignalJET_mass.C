@@ -2,7 +2,7 @@
 #include <TFile.h>
 #include <TH1F.h>
 
-int Sum_SignalMET_mass() {
+int Sum_SignalJET_mass() {
     const char* fileNames[] = {
         "SignalJET_mass_events_019839222.root",
         "SignalJET_mass_events_027985022.root",
