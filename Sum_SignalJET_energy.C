@@ -36,7 +36,7 @@ int Sum_SignalJET_energy() {
         }
 
         // Intenta obtener el histograma directamente del archivo.
-        TH1F* hist = dynamic_cast<TH1F*>(file.Get("MET"));
+        TH1F* hist = dynamic_cast<TH1F*>(file.Get("JET"));
 
         // Normaliza el histograma.
         if (hist) {
