@@ -173,7 +173,7 @@ int Sum_BackZZJET_momentum_z() {
 }
 
 int main() {
-    Sum_BackZZMJET_momentum_z();  // Llamada a la función principal.
+    Sum_BackZZJET_momentum_z();  // Llamada a la función principal.
 
     return 0;
 }
