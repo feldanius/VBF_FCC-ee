@@ -9,7 +9,7 @@ using json = nlohmann::json;
 
 int Sum_BackWWJET_energy_json() {
     // Cargar el archivo JSON
-    std::ifstream jsonFile("SignalJET_energy.json");
+    std::ifstream jsonFile("BackWWJET_energy.json");
     json jsonData;
     jsonFile >> jsonData;
 
