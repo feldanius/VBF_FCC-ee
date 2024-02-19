@@ -91,7 +91,7 @@ int Sum_BackWWJET_energy_json_log() {
     }
 
     // Guarda el histograma con escala logarítmica en un archivo ROOT
-    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json_log.root";
+    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json_log1.root";
     TFile outputFileObj(outputFileName, "RECREATE");
     logHist->Write();
     outputFileObj.Close();
