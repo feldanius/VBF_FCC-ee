@@ -8,7 +8,7 @@
 
 using json = nlohmann::json;
 
-int Sum_BackWWJET_energy_json_log() {
+int Sum_BackWWJET_energy_json_log1() {
     // Cargar el archivo JSON
     std::ifstream jsonFile("BackWWJET_energy.json");
     json jsonData;
@@ -85,13 +85,15 @@ int Sum_BackWWJET_energy_json_log() {
     TH1F* logHist = new TH1F(*cumulativeHist);
     for (int i = 1; i <= logHist->GetNbinsX(); ++i) {
         double binContent = logHist->GetBinContent(i);
-        if (binContent > 0) {
+        if (binContent > 0) { // Asegurarse de no tomar valores negativos o nulos
             logHist->SetBinContent(i, TMath::Log10(binContent));
+        } else {
+            logHist->SetBinContent(i, 0); // Asignar cero si el bin es nulo o negativo
         }
     }
 
     // Guarda el histograma con escala logarítmica en un archivo ROOT
-    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json_log1.root";
+    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json_log2.root";
     TFile outputFileObj(outputFileName, "RECREATE");
     logHist->Write();
     outputFileObj.Close();
