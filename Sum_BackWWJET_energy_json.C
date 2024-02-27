@@ -81,14 +81,13 @@ int Sum_BackWWJET_energy_json() {
     std::cout << "Relación de eventos finales sobre eventos generados: " << finalToGeneratedRatio << std::endl;
 
     // Crea un lienzo y dibuja el histograma en él con escala logarítmica en el eje y
-    TCanvas *canvas = new TCanvas("canvas", "Histograma", 800, 600);
-    canvas->SetLogy(); // Establece la escala logarítmica en el eje y
-    cumulativeHist->Draw();
-    canvas->Update();
+    //TCanvas *canvas = new TCanvas("canvas", "Histograma", 800, 600);
+    //canvas->SetLogy(); // Establece la escala logarítmica en el eje y
+    //cumulativeHist->Draw();
+    //canvas->Update();
 
     // Guarda el histograma acumulativo normalizado en un nuevo archivo
-    //const char* outputFileName = "Sum_BackWWJET_energy_histogram_json.root";
-    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json_log.root";
+    const char* outputFileName = "Sum_BackWWJET_energy_histogram_json.root";
     TFile outputFileObj(outputFileName, "RECREATE");
     canvas->Write();
     cumulativeHist->Write();
