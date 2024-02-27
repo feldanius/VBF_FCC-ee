@@ -63,9 +63,6 @@ int Sum_BackWWJET_momentum_y_json_normc() {
             std::cerr << "Error: No se pudo obtener el histograma del archivo " << outputFile << std::endl;
         }
     }
-    // Restaurar la salida estándar
-    gSystem->RedirectOutput(0);
-
     // Verifica si se obtuvieron eventos generados y finales
     if (generatedEvents == 0 || finalEvents == 0) {
         std::cerr << "Error: No se pudieron obtener los eventos generados y finales" << std::endl;
