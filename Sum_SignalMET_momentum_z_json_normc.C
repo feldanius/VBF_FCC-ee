@@ -63,8 +63,6 @@ int Sum_SignalMET_momentum_z_json_normc() {
             std::cerr << "Error: No se pudo obtener el histograma del archivo " << outputFile << std::endl;
         }
     }
-    // Restaurar la salida estándar
-    gSystem->RedirectOutput(0);
 
     // Verifica si se obtuvieron eventos generados y finales
     if (generatedEvents == 0 || finalEvents == 0) {
