@@ -9,19 +9,32 @@ void processFile(const TString& inputFile, const TString& inputDir);
 
 int JET_Signal_energy() {
   // Lista de archivos de entrada
-  std::vector<TString> inputFileList = {
-    "events_019839222.root",
-    "events_067618566.root",
-    "events_088898158.root",
-    "events_129556080.root",
-    "events_176415634.root",
-    "events_178769856.root",
-    "events_027985022.root",
-    "events_075207014.root",
-    "events_090014287.root",
-    "events_138935081.root",
-    "events_177743949.root",
-    "events_192707663.root"
+ // std::vector<TString> inputFileList = {
+  //  "events_019839222.root",
+  //  "events_067618566.root",
+  //  "events_088898158.root",
+  //  "events_129556080.root",
+  //  "events_176415634.root",
+  //  "events_178769856.root",
+  //  "events_027985022.root",
+  //  "events_075207014.root",
+  //  "events_090014287.root",
+  //  "events_138935081.root",
+  //  "events_177743949.root",
+  //  "events_192707663.root"
+ // };
+// new files
+std::vector<TString> inputFileList = {
+    "events_008995949.root",
+    "events_061640142.root",
+    "events_107858353.root",
+    "events_174244458.root",
+    "events_180776309.root",
+    "events_065244791.root",
+    "events_034459462.root",
+    "events_071153275.root",
+    "events_090844778.root",
+    "events_158628525.root"
   };
 
 //cout << "\t The folder you are trying to create already exists \n" << endl;
