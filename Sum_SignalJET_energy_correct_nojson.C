@@ -2,7 +2,7 @@
 #include <TFile.h>
 #include <TH1F.h>
 
-void Sum_SignalJET_energy_correct_nojson() {
+int Sum_SignalJET_energy_correct_nojson() {
     const char* fileNames[] = {
         "SignalJET_energy_events_019839222.root",
         "SignalJET_energy_events_027985022.root",
@@ -31,8 +31,9 @@ void Sum_SignalJET_energy_correct_nojson() {
     // Variables para almacenar las secciones transversales y las luminosidades.
     Double_t crossSection = 0.05394;  // en pb
     Double_t luminosity = 1.5e6;  // 1.5 ab^-1 expresado en pb^-1
+    //Double_t luminosity = 2.4e6;  // 2.4 ab^-1 expresado en pb^-1
 
-    // Crea un histograma acumulativo para almacenar la suma de los histogramas.
+    // Crea un histograma acumulativo para almacenar la suma de los histogramas normalizados.
     TH1F* cumulativeHist = nullptr;
 
     for (int i = 0; i < sizeof(fileNames) / sizeof(fileNames[0]); ++i) {
@@ -45,39 +46,39 @@ void Sum_SignalJET_energy_correct_nojson() {
             continue;
         }
 
-        // Intenta obtener el histograma directamente del archivo.
+	// Intenta obtener el histograma directamente del archivo.
         TH1F* hist = dynamic_cast<TH1F*>(file.Get("JET"));
 
-        // Suma el histograma.
+       // Normaliza el histograma.
         if (hist) {
+            hist->Scale(crossSection * luminosity / hist->GetEntries());  // Normalización por sección transversal y luminosidad.
+           // hist->Scale(crossSection * luminosity );  // Normalización por sección transversal y luminosidad.
+
             // Si es el primer archivo, crea el histograma acumulativo.
             if (!cumulativeHist) {
                 cumulativeHist = new TH1F(*hist);
                 cumulativeHist->SetDirectory(nullptr);  // Desvincula el histograma del archivo.
             } else {
-                cumulativeHist->Add(hist);  // Agrega el histograma al histograma acumulativo.
+                cumulativeHist->Add(hist);  // Agrega el histograma normalizado al histograma acumulativo.
             }
-        } else {
+	} else {
             std::cerr << "Error: No se pudo obtener el histograma del archivo " << fileNames[i] << std::endl;
         }
     }
 
     if (cumulativeHist) {
-        // Normaliza el histograma acumulativo a la luminosidad y sección transversal especificadas.
-        cumulativeHist->Scale(crossSection * luminosity);
-
         // Guarda el histograma acumulativo normalizado en un nuevo archivo.
-        const char* outputFileName = "Sum_SignalJET_energy_histogram_correct_nojson.root";
+       const char* outputFileName = "Sum_SignalJET_energy_correct_nojson.root";
         TFile outputFileObj(outputFileName, "RECREATE");
         cumulativeHist->Write();
         outputFileObj.Close();
 
-        std::cout << "Histograma normalizado guardado en " << outputFileName << std::endl;
+      std::cout << "Histograma normalizado guardado en " << outputFileName << std::endl;
 
         delete cumulativeHist;  // Libera la memoria del histograma acumulativo.
-    } else {
-        std::cerr << "Error: No se encontraron histogramas para sumar." << std::endl;
     }
+
+    return 0;
 }
 
 int main() {
