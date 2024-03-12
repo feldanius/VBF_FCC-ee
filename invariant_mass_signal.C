@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int invariant_mass_1() {
+int invariant_mass_signal() {
     // Nombres de los archivos ROOT
     vector<string> filenames = {
         "events_008995949.root", "events_034459462.root", "events_067618566.root", "events_088898158.root",
