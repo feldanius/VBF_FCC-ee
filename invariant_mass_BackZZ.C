@@ -6,7 +6,7 @@
 #include "TLorentzVector.h"
 
 using namespace std;
-
+int invariant_mass_BackZZ() {
     // Nombres de los archivos ROOT
     vector<string> filenames = {
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_001696302.root",
