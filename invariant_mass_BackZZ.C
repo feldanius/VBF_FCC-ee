@@ -131,20 +131,17 @@ using namespace std;
 
     // Iterar sobre los archivos
     for (const auto& filename : filenames) {
-        // Construir el nombre completo del archivo de entrada
-        TString inputFilename = inputDirectory + filename;
-
         // Abrir archivo ROOT
-        TFile* file = TFile::Open(inputFilename);
+        TFile* file = TFile::Open(filename.c_str());
         if (!file) {
-            cerr << "Error al abrir el archivo " << inputFilename << endl;
+            cerr << "Error al abrir el archivo " << filename << endl;
             continue;
         }
 
         // Obtener el árbol de eventos
         TTree* tree = (TTree*)file->Get("events");
         if (!tree) {
-            cerr << "No se pudo encontrar el árbol de eventos en " << inputFilename << endl;
+            cerr << "No se pudo encontrar el árbol de eventos en " << filename << endl;
             file->Close();
             continue;
         }
