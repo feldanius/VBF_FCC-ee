@@ -7,7 +7,7 @@
 
 using namespace std;
 
-int invariant_mass_BackWW1() {
+int invariant_mass_BackWW1_2() {
     // Nombres de los archivos ROOT con la ruta completa agregada manualmente
    vector<string> filenames = {
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_WW_ecm365/events_000081890.root",
@@ -189,7 +189,8 @@ int invariant_mass_BackWW1() {
     }
 
     // Guardar el histograma en un archivo ROOT
-    TFile* output_file = TFile::Open("invariant_mass_histogram_BackWW1.root", "RECREATE");
+    //TFile* output_file = TFile::Open("invariant_mass_histogram_BackWW1.root", "RECREATE");
+    TFile* output_file = TFile::Open("invariant_mass_histogram_BackWW1_correction_manual.root", "RECREATE");
     if (output_file) {
         hist_invariant_mass->Write();
         output_file->Close();
