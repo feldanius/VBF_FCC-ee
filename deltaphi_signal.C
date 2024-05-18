@@ -35,30 +35,33 @@ std::vector<TString> inputFileList = {
 TString inputDirectory = "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/";
 
 // Prototipo de la función de procesamiento
-void processFile(const TString& inputFile, const TString& inputDir, TH1F* hist);
+void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, TH1F* hDeltaPhi);
 
 int deltaphi_signal() {
-    TString outputFilePath = "output_delta_phi.root"; // Mover esta línea aquí para mayor claridad
+    TString outputFilePath = "output_histograms.root"; // Archivo de salida
 
-    // Crear histograma para delta phi
+    // Crear histogramas
+    TH1F* hPhi = new TH1F("hPhi", "Phi of Leading Jets;Phi (rad);Events", 50, -TMath::Pi(), TMath::Pi());
     TH1F* hDeltaPhi = new TH1F("hDeltaPhi", "Delta Phi of Leading Jets;Delta Phi (rad);Events", 50, -TMath::Pi(), TMath::Pi());
 
     // Procesar cada archivo
     for (const auto& inputFile : inputFileList) {
-        processFile(inputFile, inputDirectory, hDeltaPhi);
+        processFile(inputFile, inputDirectory, hPhi, hDeltaPhi);
     }
 
-    // Guardar histograma en archivo de salida
+    // Guardar histogramas en archivo de salida
     TFile outputFile(outputFilePath, "RECREATE");
+    hPhi->Write();
     hDeltaPhi->Write();
     outputFile.Close();
 
-    std::cout << "Histograma guardado en " << outputFilePath << std::endl;
+    std::cout << "Histogramas guardados en " << outputFilePath << std::endl;
+    delete hPhi; // Liberar memoria
     delete hDeltaPhi; // Liberar memoria
     return 0;
 }
 
-void processFile(const TString& inputFile, const TString& inputDir, TH1F* hist) {
+void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, TH1F* hDeltaPhi) {
     // Construir la ruta completa del archivo de entrada
     TString inputFilePath = inputDir + inputFile;
 
@@ -120,6 +123,10 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hist) 
         float phi1 = TMath::ATan2((*py)[leadingIndex1], (*px)[leadingIndex1]);
         float phi2 = TMath::ATan2((*py)[leadingIndex2], (*px)[leadingIndex2]);
 
+        // Llenar el histograma de phi
+        hPhi->Fill(phi1);
+        hPhi->Fill(phi2);
+
         // Calcular delta phi
         float deltaPhi = phi1 - phi2;
         if (deltaPhi > TMath::Pi()) {
@@ -128,10 +135,11 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hist) 
             deltaPhi += 2 * TMath::Pi();
         }
 
-        // Llenar el histograma
-        hist->Fill(deltaPhi);
+        // Llenar el histograma de delta phi
+        hDeltaPhi->Fill(deltaPhi);
     }
 
     // Cerrar el archivo de entrada
     inputFileRoot->Close();
 }
+
