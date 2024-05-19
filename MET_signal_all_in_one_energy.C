@@ -6,7 +6,7 @@
 #include "TH1F.h"
 #include "TCanvas.h"
 
-int MET_signal_all_in_one() {
+int MET_signal_all_in_one_energy() {
     // Vector de archivos ROOT
     std::vector<std::string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
@@ -71,7 +71,7 @@ int MET_signal_all_in_one() {
     }
 
     // Crear un archivo ROOT para guardar el histograma
-    TFile* outFile = new TFile("Missing_energy_signal.root", "RECREATE");
+    TFile* outFile = new TFile("Missing_energy_signal_energy.root", "RECREATE");
     hist->Write();
     outFile->Close();
 
