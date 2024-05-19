@@ -5,6 +5,7 @@
 #include <TTree.h>
 #include <TH1F.h>
 #include <TMath.h>
+#include <edm4hep/ReconstructedParticleData.h>
 
 // Lista de archivos de entrada
 std::vector<TString> inputFileList = {
@@ -37,7 +38,7 @@ TString inputDirectory = "/eos/experiment/fcc/ee/generation/DelphesEvents/winter
 // Prototipo de la función de procesamiento
 void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, TH1F* hDeltaPhi);
 
-int deltaphi_signal() {
+int main() {
     TString outputFilePath = "output_histograms.root"; // Archivo de salida
 
     // Crear histogramas
@@ -85,14 +86,10 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
     }
 
     // Variables para almacenar datos del árbol
-    std::vector<float>* px = 0;
-    std::vector<float>* py = 0;
-    std::vector<float>* energy = 0;
+    std::vector<edm4hep::ReconstructedParticleData>* jets = nullptr;
 
-    // Set branch addresses
-    tree->SetBranchAddress("Jet.momentum.x", &px);
-    tree->SetBranchAddress("Jet.momentum.y", &py);
-    tree->SetBranchAddress("Jet.energy", &energy);
+    // Set branch address
+    tree->SetBranchAddress("Jet", &jets);
 
     // Loop sobre los eventos
     Long64_t nEntries = tree->GetEntries();
@@ -100,28 +97,28 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
         tree->GetEntry(i);
 
         // Verificar que haya al menos dos jets
-        if (px->size() < 2 || py->size() < 2) continue;
+        if (jets->size() < 2) continue;
 
         // Encontrar los leading jets (mayor energía)
         size_t leadingIndex1 = 0;
         size_t leadingIndex2 = 1;
-        if ((*energy)[1] > (*energy)[0]) {
+        if ((*jets)[1].energy > (*jets)[0].energy) {
             leadingIndex1 = 1;
             leadingIndex2 = 0;
         }
 
-        for (size_t j = 2; j < energy->size(); ++j) {
-            if ((*energy)[j] > (*energy)[leadingIndex1]) {
+        for (size_t j = 2; j < jets->size(); ++j) {
+            if ((*jets)[j].energy > (*jets)[leadingIndex1].energy) {
                 leadingIndex2 = leadingIndex1;
                 leadingIndex1 = j;
-            } else if ((*energy)[j] > (*energy)[leadingIndex2]) {
+            } else if ((*jets)[j].energy > (*jets)[leadingIndex2].energy) {
                 leadingIndex2 = j;
             }
         }
 
         // Calcular phi para los leading jets
-        float phi1 = TMath::ATan2((*py)[leadingIndex1], (*px)[leadingIndex1]);
-        float phi2 = TMath::ATan2((*py)[leadingIndex2], (*px)[leadingIndex2]);
+        float phi1 = TMath::ATan2((*jets)[leadingIndex1].momentum.y, (*jets)[leadingIndex1].momentum.x);
+        float phi2 = TMath::ATan2((*jets)[leadingIndex2].momentum.y, (*jets)[leadingIndex2].momentum.x);
 
         // Llenar el histograma de phi
         hPhi->Fill(phi1);
@@ -142,4 +139,5 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
     // Cerrar el archivo de entrada
     inputFileRoot->Close();
 }
+
 
