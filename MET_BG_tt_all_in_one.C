@@ -6,6 +6,7 @@
 #include "TH1F.h"
 #include "TCanvas.h"
 
+using namespace std;
 int MET_BG_tt_all_in_one() {
     // Vector de archivos ROOT
     vector<string> filenames = {
