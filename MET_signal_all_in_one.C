@@ -5,7 +5,6 @@
 #include "TTree.h"
 #include "TH1F.h"
 #include "TCanvas.h"
-#include <edm4hep>  // Incluir la librería específica si es necesaria
 
 int MET_signal_all_in_one() {
     // Vector de archivos ROOT
