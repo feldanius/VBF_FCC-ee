@@ -7,7 +7,7 @@
 #include "TCanvas.h"
 
 using namespace std;
-int MET_BG_tt_all_in_one() {
+int MET_BG_tt_all_in_one_energy() {
     // Vector de archivos ROOT
     vector<string> filenames = {
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_tt_ecm365/events_002305720.root",
@@ -77,7 +77,7 @@ int MET_BG_tt_all_in_one() {
     }
 
     // Crear un archivo ROOT para guardar el histograma
-    TFile* outFile = new TFile("Missing_energy_BG_tt.root", "RECREATE");
+    TFile* outFile = new TFile("Missing_energy_BG_tt_energy.root", "RECREATE");
     hist->Write();
     outFile->Close();
 
