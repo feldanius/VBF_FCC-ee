@@ -38,10 +38,9 @@ TString inputDirectory = "/eos/experiment/fcc/ee/generation/DelphesEvents/winter
 // Prototipo de la función de procesamiento
 void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, TH1F* hDeltaPhi);
 
-int main() {
+int deltaphi_signal() {
     TString outputFilePath = "output_histograms.root"; // Archivo de salida
-
-    // Crear histogramas
+// Crear histogramas
     TH1F* hPhi = new TH1F("hPhi", "Phi of Leading Jets;Phi (rad);Events", 50, -TMath::Pi(), TMath::Pi());
     TH1F* hDeltaPhi = new TH1F("hDeltaPhi", "Delta Phi of Leading Jets;Delta Phi (rad);Events", 50, -TMath::Pi(), TMath::Pi());
 
@@ -74,8 +73,7 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
         std::cerr << "Error abriendo el archivo: " << inputFilePath << std::endl;
         return;
     }
-
-    // Obtener el árbol del archivo
+// Obtener el árbol del archivo
     TTree* tree = (TTree*)inputFileRoot->Get("events");
 
     // Verificar si el árbol se obtuvo correctamente
@@ -99,7 +97,7 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
         // Verificar que haya al menos dos jets
         if (jets->size() < 2) continue;
 
-        // Encontrar los leading jets (mayor energía)
+// Encontrar los leading jets (mayor energía)
         size_t leadingIndex1 = 0;
         size_t leadingIndex2 = 1;
         if ((*jets)[1].energy > (*jets)[0].energy) {
@@ -107,16 +105,23 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
             leadingIndex2 = 0;
         }
 
-        for (size_t j = 2; j < jets->size(); ++j) {
+	for (size_t j = 2; j < jets->size(); ++j) {
             if ((*jets)[j].energy > (*jets)[leadingIndex1].energy) {
                 leadingIndex2 = leadingIndex1;
                 leadingIndex1 = j;
             } else if ((*jets)[j].energy > (*jets)[leadingIndex2].energy) {
                 leadingIndex2 = j;
             }
-        }
+	}
 
-        // Calcular phi para los leading jets
+	// Calcular phi para los leading jets
+        float phi1 = TMath::ATan2((*jets)[leadingIndex1].momentum.y, (*jets)[leadingIndex1].momentum.x);
+        float phi2 = TMath::ATan2((*jets)[leadingIndex2].momentum.y, (*jets)[leadingIndex2].momentum.x);
+
+        // Llenar el histograma de phi
+        hPhi->Fill(phi1);
+        hPhi->Fill(phi2);
+// Calcular phi para los leading jets
         float phi1 = TMath::ATan2((*jets)[leadingIndex1].momentum.y, (*jets)[leadingIndex1].momentum.x);
         float phi2 = TMath::ATan2((*jets)[leadingIndex2].momentum.y, (*jets)[leadingIndex2].momentum.x);
 
@@ -132,12 +137,11 @@ void processFile(const TString& inputFile, const TString& inputDir, TH1F* hPhi, 
             deltaPhi += 2 * TMath::Pi();
         }
 
-        // Llenar el histograma de delta phi
+	// Llenar el histograma de delta phi
         hDeltaPhi->Fill(deltaPhi);
     }
 
     // Cerrar el archivo de entrada
     inputFileRoot->Close();
 }
-
 
