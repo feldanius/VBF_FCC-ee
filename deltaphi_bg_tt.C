@@ -43,7 +43,7 @@ std::vector<std::string> filenames = {
 void processFile(const TString& inputFile, TH1F* hPhi, TH1F* hDeltaPhi);
 
 int deltaphi_bg_tt() {
-    TString outputFilePath = "output_histograms.root"; // Archivo de salida
+    TString outputFilePath = "deltaphi_bg_tt.root"; // Archivo de salida
 
     // Crear histogramas
     TH1F* hPhi = new TH1F("hPhi", "Phi of Leading Jets;Phi (rad);Events", 50, -TMath::Pi(), TMath::Pi());
