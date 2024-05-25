@@ -126,7 +126,6 @@ std::vector<std::string> filenames = {
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_146587224.root",  
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_167291958.root"
 };
-
 // Prototipo de la función de procesamiento
 void processFile(const TString& inputFile, TH1F* hPhi, TH1F* hDeltaPhi);
 
@@ -224,6 +223,10 @@ void processFile(const TString& inputFile, TH1F* hPhi, TH1F* hDeltaPhi) {
         // Llenar el histograma de delta phi
         hDeltaPhi->Fill(deltaPhi);
     }
+
+    // Cerrar el archivo de entrada
+    inputFileRoot->Close();
+}
 
     // Cerrar el archivo de entrada
     inputFileRoot->Close();
