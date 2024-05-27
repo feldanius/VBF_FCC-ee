@@ -60,14 +60,14 @@ int cut_invariant_mass_signal() {
         vector<float> jet_px(2);
         vector<float> jet_py(2);
         vector<float> jet_pz(2);
-        vector<int> jet_tracks_begin(2);
-        vector<int> jet_tracks_end(2);
+        vector<unsigned int> jet_tracks_begin(2); // Cambiado a UInt_t
+        vector<unsigned int> jet_tracks_end(2);   // Cambiado a UInt_t
         vector<float> jet_mass(2);
         vector<float> jet_goodnessOfPID(2);
         vector<float> jet_ref_x(2);
         vector<float> jet_ref_y(2);
         vector<float> jet_ref_z(2);
-        vector<vector<float>> jet_covMatrix(2, vector<float>(10));
+        float jet_covMatrix[2][10]; // Para la matriz de covarianza
 
         // Conectar las variables del árbol con las variables locales
         tree->SetBranchAddress("Jet.energy", &jet_energy[0]);
@@ -81,7 +81,7 @@ int cut_invariant_mass_signal() {
         tree->SetBranchAddress("Jet.referencePoint.x", &jet_ref_x[0]);
         tree->SetBranchAddress("Jet.referencePoint.y", &jet_ref_y[0]);
         tree->SetBranchAddress("Jet.referencePoint.z", &jet_ref_z[0]);
-        tree->SetBranchAddress("Jet.covMatrix", &jet_covMatrix[0][0]);
+        tree->SetBranchAddress("Jet.covMatrix[10]", &jet_covMatrix[0][0]);
 
         // Iterar sobre los eventos
         for (Long64_t i = 0; i < tree->GetEntries(); ++i) {
