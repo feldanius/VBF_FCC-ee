@@ -9,7 +9,7 @@
 
 using namespace std;
 // Lista de archivos con rutas completas
-std::vector<std::string> filenames =  = {
+std::vector<std::string> filenames = {
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_001696302.root",
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_040468238.root", 
 "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/p8_ee_ZZ_ecm365/events_071619177.root", 
