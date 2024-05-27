@@ -67,7 +67,7 @@ int cut_invariant_mass_signal() {
         vector<float> jet_ref_x(2);
         vector<float> jet_ref_y(2);
         vector<float> jet_ref_z(2);
-        float jet_covMatrix[2][10]; // Para la matriz de covarianza
+        // vector<vector<float>> jet_covMatrix(2, vector<float>(10)); // Comentado, revisar más adelante
 
         // Conectar las variables del árbol con las variables locales
         tree->SetBranchAddress("Jet.energy", &jet_energy[0]);
@@ -81,7 +81,7 @@ int cut_invariant_mass_signal() {
         tree->SetBranchAddress("Jet.referencePoint.x", &jet_ref_x[0]);
         tree->SetBranchAddress("Jet.referencePoint.y", &jet_ref_y[0]);
         tree->SetBranchAddress("Jet.referencePoint.z", &jet_ref_z[0]);
-        tree->SetBranchAddress("Jet.covMatrix[10]", &jet_covMatrix[0][0]);
+        // tree->SetBranchAddress("Jet.covMatrix", &jet_covMatrix[0][0]); // Comentado, revisar más adelante
 
         // Iterar sobre los eventos
         for (Long64_t i = 0; i < tree->GetEntries(); ++i) {
@@ -98,10 +98,10 @@ int cut_invariant_mass_signal() {
                 float displacement = sqrt(jet_ref_x[j]*jet_ref_x[j] + jet_ref_y[j]*jet_ref_y[j] + jet_ref_z[j]*jet_ref_z[j]);
 
                 // Evaluar la calidad de la medición (ejemplo: usar el primer elemento de la matriz de covarianza)
-                float quality = jet_covMatrix[j][0];
+                // float quality = jet_covMatrix[j][0];
 
                 // Criterio de b-tagging: más de 2 tracks, masa mayor a un umbral, buena PID, desplazamiento significativo y buena calidad de medición
-                if (num_tracks > 2 && mass > 5.0 && goodnessOfPID > 0.8 && displacement > 0.1 && quality < 1.0) {  // Ajustar los umbrales según sea necesario
+                if (num_tracks > 2 && mass > 5.0 && goodnessOfPID > 0.8 && displacement > 0.1 /* && quality < 1.0 */) {  // Ajustar los umbrales según sea necesario
                     TLorentzVector jet;
                     jet.SetPxPyPzE(jet_px[j], jet_py[j], jet_pz[j], jet_energy[j]);
                     jets.push_back(jet);
