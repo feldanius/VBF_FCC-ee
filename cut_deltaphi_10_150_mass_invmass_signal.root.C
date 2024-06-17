@@ -9,7 +9,7 @@
 
 using namespace std;
 
-int cut_deltaphi_10_150_mass_invmass_signal.root() {
+int cut_deltaphi_10_150_mass_invmass_signal() {
     // Nombres de los archivos ROOT
     vector<string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
