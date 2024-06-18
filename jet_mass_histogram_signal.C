@@ -6,7 +6,7 @@
 
 using namespace std;
 
-int jet_mass_histogram_signal() {
+int extract_mass_histogram() {
     // Nombres de los archivos ROOT
     vector<string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
@@ -34,13 +34,13 @@ int jet_mass_histogram_signal() {
     };
 
     // Crear un histograma para la masa de los jets
-    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 400);
+    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 100);
 
     // Iterar sobre los archivos
     for (const auto& filename : filenames) {
         // Abrir archivo ROOT
         TFile* file = TFile::Open(filename.c_str());
-        if (!file) {
+        if (!file || file->IsZombie()) {
             cerr << "Error al abrir el archivo " << filename << endl;
             continue;
         }
@@ -54,17 +54,20 @@ int jet_mass_histogram_signal() {
         }
 
         // Variables para almacenar la información de los jets
-        float jet_mass;
+        vector<float>* jet_mass = nullptr;
 
         // Conectar las variables del árbol con las variables locales
         tree->SetBranchAddress("Jet.mass", &jet_mass);
 
         // Iterar sobre los eventos
-        for (Long64_t i = 0; i < tree->GetEntries(); ++i) {
+        Long64_t nEntries = tree->GetEntries();
+        for (Long64_t i = 0; i < nEntries; ++i) {
             tree->GetEntry(i);
 
-            // Llenar el histograma con la masa del jet
-            hist_mass->Fill(jet_mass);
+            // Llenar el histograma con la masa de cada jet
+            for (float mass : *jet_mass) {
+                hist_mass->Fill(mass);
+            }
         }
 
         // Cerrar el archivo ROOT
@@ -72,7 +75,7 @@ int jet_mass_histogram_signal() {
     }
 
     // Guardar el histograma en un archivo ROOT
-    TFile* output_file = TFile::Open("jet_mass_histogram_signal.root", "RECREATE");
+    TFile* output_file = TFile::Open("jet_mass_histogram.root", "RECREATE");
     if (output_file) {
         hist_mass->Write();
         output_file->Close();
@@ -85,3 +88,4 @@ int jet_mass_histogram_signal() {
 
     return 0;
 }
+
