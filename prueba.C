@@ -5,9 +5,10 @@
 #include "TTree.h"
 #include "TH1F.h"
 
-void create_jet_mass_histogram() {
-    // Vector de nombres de archivos ROOT
-    std::vector<std::string> filenames = {
+using namespace std;
+int prueba() {
+    
+    vector<string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_034459462.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_067618566.root",
@@ -85,7 +86,3 @@ void create_jet_mass_histogram() {
     delete outFile;
 }
 
-int prueba() {
-    create_jet_mass_histogram();
-    return 0;
-}
