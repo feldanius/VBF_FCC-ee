@@ -58,15 +58,10 @@ int jet_mass_histogram_signal() {
         // Configurar la dirección de la rama
         tree->SetBranchAddress("Jet.mass", &jet_mass);
 
-        // Bucle sobre los eventos
-        Long64_t nentries = tree->GetEntries();
+       Long64_t nentries = tree->GetEntries();
         for (Long64_t i = 0; i < nentries; i++) {
             tree->GetEntry(i);
-
-            // Llenar el histograma con la masa de cada jet
-            for (float mass : *jet_mass) {
-                hist_mass->Fill(mass);
-            }
+            hist->Fill(jet_mass);
         }
 
         // Cerrar el archivo
