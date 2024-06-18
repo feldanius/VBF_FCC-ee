@@ -1,14 +1,16 @@
+
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1F.h"
+#include "TCanvas.h"
 
-using namespace std;
 int prueba() {
-    
-    vector<string> filenames = {
+    // Vector de archivos ROOT
+    std::vector<std::string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_034459462.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_067618566.root",
@@ -33,8 +35,8 @@ int prueba() {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_180776309.root"
     };
 
-    // Crear un histograma para la masa de los jets
-    TH1F* hist = new TH1F("hist_mass", "Masa de los jets", 100, 0, 400);
+    // Crear un histograma para la energía perdida
+    TH1F* hist = new TH1F("jetmass", "Jet_mass", 100, 0, 500);
 
     // Bucle sobre los archivos
     for (const auto& filename : filenames) {
@@ -53,20 +55,14 @@ int prueba() {
             continue;
         }
 
-        // Variable para almacenar la masa del jet
+        // Variable para almacenar la energía perdida
         float jet_mass;
 
         // Configurar la dirección de la rama
-        if (tree->SetBranchAddress("Jet.mass", &jet_mass) != 0) {
-            std::cerr << "Error configurando la dirección de la hoja 'Jet.mass' en el archivo: " << filename << std::endl;
-            file->Close();
-            continue;
-        }
+        tree->SetBranchAddress("Jet.mass", &jet_mass);
 
-        // Obtener el número de entradas en el árbol
+        // Bucle sobre los eventos
         Long64_t nentries = tree->GetEntries();
-
-        // Llenar el histograma con la masa de los jets
         for (Long64_t i = 0; i < nentries; i++) {
             tree->GetEntry(i);
             hist->Fill(jet_mass);
@@ -77,12 +73,13 @@ int prueba() {
     }
 
     // Crear un archivo ROOT para guardar el histograma
-    TFile* outFile = new TFile("jet_mass_histogram.root", "RECREATE");
+    TFile* outFile = new TFile("jet_signal_mass.root", "RECREATE");
     hist->Write();
     outFile->Close();
 
-    // Liberar memoria
+    // Limpieza
     delete hist;
     delete outFile;
-}
 
+    return 0;
+}
