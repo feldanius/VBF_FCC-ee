@@ -52,13 +52,21 @@ int jet_mass_histogram_signal() {
             continue;
         }
 
+        // Verificar si la hoja "Jet.mass" existe
+        if (!tree->GetLeaf("Jet.mass")) {
+            std::cerr << "La hoja 'Jet.mass' no existe en el archivo: " << filename << std::endl;
+            file->Close();
+            continue;
+        }
+
         // Variables para almacenar la información de los jets
         float jet_mass;
 
-        // Configurar la dirección de la rama
+        // Configurar la dirección de la hoja
         tree->SetBranchAddress("Jet.mass", &jet_mass);
 
-       Long64_t nentries = tree->GetEntries();
+        // Obtener el número de entradas del árbol
+        Long64_t nentries = tree->GetEntries();
         for (Long64_t i = 0; i < nentries; i++) {
             tree->GetEntry(i);
             hist->Fill(jet_mass);
@@ -79,5 +87,6 @@ int jet_mass_histogram_signal() {
 
     return 0;
 }
+
 
 
