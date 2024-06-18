@@ -33,7 +33,7 @@ int jet_mass_histogram_signal() {
     };
 
     // Crear un histograma para la masa de los jets
-    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 400);
+    TH1F* hist = new TH1F("hist_mass", "Masa de los jets", 100, 0, 400);
 
     // Bucle sobre los archivos
     for (const auto& filename : filenames) {
@@ -70,11 +70,11 @@ int jet_mass_histogram_signal() {
 
     // Crear un archivo ROOT para guardar el histograma
     TFile* outFile = new TFile("jet_mass_histogram_signal.root", "RECREATE");
-    hist_mass->Write();
+    hist->Write();
     outFile->Close();
 
     // Limpieza
-    delete hist_mass;
+    delete hist;
     delete outFile;
 
     return 0;
