@@ -1,14 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <string>
 #include "TFile.h"
 #include "TTree.h"
 #include "TH1F.h"
 
-using namespace std;
-
-int extract_mass_histogram() {
-    // Nombres de los archivos ROOT
-    vector<string> filenames = {
+int extract_jet_mass() {
+    // Vector de archivos ROOT
+    std::vector<std::string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_034459462.root",
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_067618566.root",
@@ -34,34 +33,34 @@ int extract_mass_histogram() {
     };
 
     // Crear un histograma para la masa de los jets
-    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 100);
+    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 200);
 
-    // Iterar sobre los archivos
+    // Bucle sobre los archivos
     for (const auto& filename : filenames) {
-        // Abrir archivo ROOT
+        // Abre el archivo ROOT
         TFile* file = TFile::Open(filename.c_str());
         if (!file || file->IsZombie()) {
-            cerr << "Error al abrir el archivo " << filename << endl;
+            std::cerr << "Error abriendo el archivo: " << filename << std::endl;
             continue;
         }
 
-        // Obtener el árbol de eventos
+        // Obtener el árbol "events"
         TTree* tree = (TTree*)file->Get("events");
         if (!tree) {
-            cerr << "No se pudo encontrar el árbol de eventos en " << filename << endl;
+            std::cerr << "Error obteniendo el árbol 'events' del archivo: " << filename << std::endl;
             file->Close();
             continue;
         }
 
         // Variables para almacenar la información de los jets
-        vector<float>* jet_mass = nullptr;
+        float jet_mass;
 
-        // Conectar las variables del árbol con las variables locales
+        // Configurar la dirección de la rama
         tree->SetBranchAddress("Jet.mass", &jet_mass);
 
-        // Iterar sobre los eventos
-        Long64_t nEntries = tree->GetEntries();
-        for (Long64_t i = 0; i < nEntries; ++i) {
+        // Bucle sobre los eventos
+        Long64_t nentries = tree->GetEntries();
+        for (Long64_t i = 0; i < nentries; i++) {
             tree->GetEntry(i);
 
             // Llenar el histograma con la masa de cada jet
@@ -70,22 +69,20 @@ int extract_mass_histogram() {
             }
         }
 
-        // Cerrar el archivo ROOT
+        // Cerrar el archivo
         file->Close();
     }
 
-    // Guardar el histograma en un archivo ROOT
-    TFile* output_file = TFile::Open("jet_mass_histogram.root", "RECREATE");
-    if (output_file) {
-        hist_mass->Write();
-        output_file->Close();
-    } else {
-        cerr << "Error al abrir el archivo de salida" << endl;
-    }
+    // Crear un archivo ROOT para guardar el histograma
+    TFile* outFile = new TFile("jet_mass_histogram.root", "RECREATE");
+    hist_mass->Write();
+    outFile->Close();
 
-    // Limpiar la memoria
+    // Limpieza
     delete hist_mass;
+    delete outFile;
 
     return 0;
 }
+
 
