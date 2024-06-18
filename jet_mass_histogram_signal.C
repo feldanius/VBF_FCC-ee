@@ -5,7 +5,7 @@
 #include "TTree.h"
 #include "TH1F.h"
 
-int extract_jet_mass() {
+int jet_mass_histogram_signal() {
     // Vector de archivos ROOT
     std::vector<std::string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
@@ -33,7 +33,7 @@ int extract_jet_mass() {
     };
 
     // Crear un histograma para la masa de los jets
-    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 200);
+    TH1F* hist_mass = new TH1F("hist_mass", "Masa de los jets", 100, 0, 400);
 
     // Bucle sobre los archivos
     for (const auto& filename : filenames) {
@@ -74,7 +74,7 @@ int extract_jet_mass() {
     }
 
     // Crear un archivo ROOT para guardar el histograma
-    TFile* outFile = new TFile("jet_mass_histogram.root", "RECREATE");
+    TFile* outFile = new TFile("jet_mass_histogram_signal.root", "RECREATE");
     hist_mass->Write();
     outFile->Close();
 
