@@ -15,12 +15,22 @@ int Sum_SignalJET_mass() {
         "SignalJET_mass_events_176415634.root",
         "SignalJET_mass_events_177743949.root",
         "SignalJET_mass_events_178769856.root",
-        "SignalJET_mass_events_192707663.root"
+        "SignalJET_mass_events_192707663.root",
+        "SignalJET_mass_events_008995949.root",
+        "SignalJET_mass_events_061640142.root",
+        "SignalJET_mass_events_107858353.root",
+        "SignalJET_mass_events_174244458.root",
+        "SignalJET_mass_events_180776309.root",
+        "SignalJET_mass_events_065244791.root",
+        "SignalJET_mass_events_034459462.root",
+        "SignalJET_mass_events_071153275.root",
+        "SignalJET_mass_events_090844778.root",
+        "SignalJET_mass_events_158628525.root" 
     };
 
     // Variables para almacenar las secciones transversales y las luminosidades.
     Double_t crossSection = 0.05394;  // en pb
-    Double_t luminosity = 1.5e-6;  // 1.5 ab^-1 expresado en pb^-1
+    Double_t luminosity = 2.4e-6;  // 2.4 ab^-1 expresado en pb^-1
 
     // Crea un histograma acumulativo para almacenar la suma de los histogramas normalizados.
     TH1F* cumulativeHist = nullptr;
@@ -40,7 +50,7 @@ int Sum_SignalJET_mass() {
 
         // Normaliza el histograma.
         if (hist) {
-            hist->Scale(crossSection * luminosity / hist->GetEntries());  // Normalización por sección transversal y luminosidad.
+            hist->Scale(crossSection * luminosity);  // Normalización por sección transversal y luminosidad.
 
             // Si es el primer archivo, crea el histograma acumulativo.
             if (!cumulativeHist) {
@@ -56,7 +66,7 @@ int Sum_SignalJET_mass() {
 
     if (cumulativeHist) {
         // Guarda el histograma acumulativo normalizado en un nuevo archivo.
-        const char* outputFileName = "Sum_SignalJET_mass_histogram.root";
+        const char* outputFileName = "SignalJET_mass_histogram.root";
         TFile outputFileObj(outputFileName, "RECREATE");
         cumulativeHist->Write();
         outputFileObj.Close();
