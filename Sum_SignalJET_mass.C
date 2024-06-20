@@ -30,7 +30,7 @@ int Sum_SignalJET_mass() {
 
     // Variables para almacenar las secciones transversales y las luminosidades.
     Double_t crossSection = 0.05394;  // en pb
-    Double_t luminosity = 2.4e-6;  // 2.4 ab^-1 expresado en pb^-1
+    Double_t luminosity = 2.4e6;  // 2.4 ab^-1 expresado en pb^-1
 
     // Crea un histograma acumulativo para almacenar la suma de los histogramas normalizados.
     TH1F* cumulativeHist = nullptr;
