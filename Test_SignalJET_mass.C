@@ -80,7 +80,7 @@ int Test_SignalJET_mass() {
 }
 
 int main() {
-    Sum_SignalJET_mass();  // Llamada a la función principal.
+    Test_SignalJET_mass();  // Llamada a la función principal.
 
     return 0;
 }
