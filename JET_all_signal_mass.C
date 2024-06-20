@@ -6,7 +6,7 @@
 #include "TH1F.h"
 #include "TCanvas.h"
 
-int JET_signal_mass() {
+int JET_all_signal_mass() {
     // Vector de archivos ROOT
     std::vector<std::string> filenames = {
         "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_nunuH_ecm365/events_008995949.root",
