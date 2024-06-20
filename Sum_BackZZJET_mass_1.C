@@ -2,7 +2,7 @@
 #include <TFile.h>
 #include <TH1F.h>
 
-int Sum_BackZZJET_mass() {
+int Sum_BackZZJET_mass_1() {
     const char* fileNames[] = {
         "BackZZJET_mass_events_001696302.root",
         "BackZZJET_mass_events_003001058.root",
@@ -123,7 +123,7 @@ int Sum_BackZZJET_mass() {
 
     // Variables para almacenar las secciones transversales y las luminosidades.
     Double_t crossSection = 0.6428;  // en pb
-    Double_t luminosity = 1.5e-6;  // 1.5 ab^-1 expresado en pb^-1
+    Double_t luminosity = 2.4e6;  // 2.4 ab^-1 expresado en pb^-1
 
     // Crea un histograma acumulativo para almacenar la suma de los histogramas normalizados.
     TH1F* cumulativeHist = nullptr;
@@ -143,7 +143,7 @@ int Sum_BackZZJET_mass() {
 
         // Normaliza el histograma.
         if (hist) {
-            hist->Scale(crossSection * luminosity / hist->GetEntries());  // Normalización por sección transversal y luminosidad.
+            hist->Scale(crossSection * luminosity );  // Normalización por sección transversal y luminosidad.
 
             // Si es el primer archivo, crea el histograma acumulativo.
             if (!cumulativeHist) {
@@ -159,7 +159,7 @@ int Sum_BackZZJET_mass() {
 
     if (cumulativeHist) {
         // Guarda el histograma acumulativo normalizado en un nuevo archivo.
-        const char* outputFileName = "Sum_BackZZJET_mass_histogram.root";
+        const char* outputFileName = "BackZZJET_mass_histogram.root";
         TFile outputFileObj(outputFileName, "RECREATE");
         cumulativeHist->Write();
         outputFileObj.Close();
@@ -173,7 +173,7 @@ int Sum_BackZZJET_mass() {
 }
 
 int main() {
-    Sum_BackZZJET_mass();  // Llamada a la función principal.
+    Sum_BackZZJET_mass_1();  // Llamada a la función principal.
 
     return 0;
 }
