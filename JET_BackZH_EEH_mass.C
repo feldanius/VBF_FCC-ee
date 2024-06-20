@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <TString.h>
+#include <TFile.h>
+#include <TTree.h>
+#include <TH1F.h>
+
+void processFile(const TString& inputFile, const TString& inputDir);
+
+int JET_BackZH_EEH_mass() {
+  // Lista de archivos de entrada
+  std::vector<TString> inputFileList = {
+"events_018107429.root",
+"events_104473316.root",
+"events_117039771.root",
+"events_130128294.root",
+"events_173768499.root",
+"events_047118042.root",
+"events_107849662.root",
+"events_118636096.root",
+"events_153113508.root",
+"events_182514790.root"
+  };
+
+//cout << "\t The folder you are trying to create already exists \n" << endl;
+
+  // Directorio de salida
+  TString inputDirectory = "/eos/experiment/fcc/ee/generation/DelphesEvents/winter2023/IDEA/wzp6_ee_eeH_ecm365/";
+
+  for (const auto& inputFile : inputFileList) {
+    processFile(inputFile, inputDirectory);
+  }
+
+  return 0;
+}
+
+void processFile(const TString& inputFile, const TString& inputDir) {
+  // Construir la ruta completa del archivo de entrada
+  TString inputFilePath = inputDir + inputFile;
+
+  // Abrir el archivo de entrada
+  TFile* inputFileRoot = TFile::Open(inputFilePath);
+
+  // Verificar si el archivo se abrió correctamente
+  if (!inputFileRoot || inputFileRoot->IsZombie()) {
+    std::cerr << "Error abriendo el archivo: " << inputFilePath << std::endl;
+    return 0;
+  }
+
+  // Obtener el árbol del archivo
+  TTree* tree = (TTree*)inputFileRoot->Get("events");
+
+  // Verificar si el árbol se obtuvo correctamente
+  if (!tree) {
+    std::cerr << "Error obteniendo el árbol 'events' del archivo: " << inputFilePath << std::endl;
+    inputFileRoot->Close();
+    return 0;
+  }
+
+// Crear un histograma y llenarlo con la información deseada
+  TH1F* histo = new TH1F("JET", "JET", 100, 0, 500);
+  tree->Draw("Jet.mass>>JET");
+
+  // Hacer una copia de inputFile y quitar la extensión
+  TString inputFileCopy = inputFile;
+  TString inputFileNameWithoutExt = inputFileCopy.ReplaceAll(".root", "");
+
+  // Construir el nombre del archivo de salida
+  TString outputFileName = "JET_BackZH_EEH_mass_" + inputFileNameWithoutExt + ".root";
+
+  // Crear el archivo de salida y escribir el histograma
+  TFile* outputFile = new TFile(outputFileName, "recreate");
+  histo->Write();
+  outputFile->Close();
+
+  // Limpiar la memoria
+  delete histo;
+  delete inputFileRoot;
+
+  std::cout << "Procesado correctamente: " << inputFilePath << std::endl;
+        return 0;
+}
