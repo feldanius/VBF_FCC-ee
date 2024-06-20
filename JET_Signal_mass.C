@@ -21,7 +21,17 @@ int JET_Signal_mass() {
     "events_090014287.root",
     "events_138935081.root",
     "events_177743949.root",
-    "events_192707663.root"
+    "events_192707663.root",
+    "events_008995949.root",
+    "events_061640142.root",
+    "events_107858353.root",
+    "events_174244458.root",
+    "events_180776309.root",
+    "events_065244791.root",
+    "events_034459462.root",
+    "events_071153275.root",
+    "events_090844778.root",
+    "events_158628525.root"  
   };
 
 //cout << "\t The folder you are trying to create already exists \n" << endl;
