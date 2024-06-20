@@ -2,7 +2,7 @@
 #include <TFile.h>
 #include <TH1F.h>
 
-int Sum_BackWWJET_mass() {
+int Sum_BackWWJET_mass_1() {
     const char* fileNames[] = {
     "BackWWJET_mass_events_000081890.root", "BackWWJET_mass_events_077177641.root", "BackWWJET_mass_events_124947653.root",
     "BackWWJET_mass_events_001084100.root", "BackWWJET_mass_events_077961119.root", "BackWWJET_mass_events_125410393.root",
@@ -48,7 +48,7 @@ int Sum_BackWWJET_mass() {
 
     // Variables para almacenar las secciones transversales y las luminosidades.
     Double_t crossSection = 10.7165;  // en pb
-    Double_t luminosity = 1.5e-6;  // 1.5 ab^-1 expresado en pb^-1
+    Double_t luminosity = 2.4e6;  // 2.4 ab^-1 expresado en pb^-1
 
     // Crea un histograma acumulativo para almacenar la suma de los histogramas normalizados.
     TH1F* cumulativeHist = nullptr;
@@ -68,7 +68,7 @@ int Sum_BackWWJET_mass() {
 
         // Normaliza el histograma.
         if (hist) {
-            hist->Scale(crossSection * luminosity / hist->GetEntries());  // Normalización por sección transversal y luminosidad.
+            hist->Scale(crossSection * luminosity);  // Normalización por sección transversal y luminosidad.
 
             // Si es el primer archivo, crea el histograma acumulativo.
             if (!cumulativeHist) {
@@ -84,7 +84,7 @@ int Sum_BackWWJET_mass() {
 
     if (cumulativeHist) {
         // Guarda el histograma acumulativo normalizado en un nuevo archivo.
-        const char* outputFileName = "Sum_BackWWJET_mass_histogram.root";
+        const char* outputFileName = "BackWWJET_mass_histogram.root";
         TFile outputFileObj(outputFileName, "RECREATE");
         cumulativeHist->Write();
         outputFileObj.Close();
@@ -98,7 +98,7 @@ int Sum_BackWWJET_mass() {
 }
 
 int main() {
-    Sum_BackWWJET_mass();  // Llamada a la función principal.
+    Sum_BackWWJET_mass_1();  // Llamada a la función principal.
 
     return 0;
 }
