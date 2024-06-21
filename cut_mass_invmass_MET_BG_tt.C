@@ -112,7 +112,7 @@ int cut_mass_invmass_MET_BG_tt() {
     }
 
     // Guardar el histograma en un archivo ROOT
-    TFile* output_file = TFile::Open("cut_mass_invmass_MET_BG_zz.root", "RECREATE");
+    TFile* output_file = TFile::Open("cut_mass_invmass_MET_BG_tt.root", "RECREATE");
     if (output_file) {
         hist_met->Write();
         output_file->Close();
