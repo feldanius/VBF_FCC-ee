@@ -25,10 +25,7 @@ int cut_reference_point_displacement_histogram_bg_zh_eeh() {
     };
 
     // Crear un histograma para el desplazamiento del punto de referencia
-    TH1F* hist_displacement = new TH1F("hist_displacement", "Desplazamiento del punto de referencia", 50, 0, 0.2);
-
-    // Crear un histograma para la masa invariante (si es necesario)
-    TH1F* hist_invmass = new TH1F("hist_invmass", "Masa invariante de los leading jets", 100, 0, 200);
+    TH1F* hist_displacement = new TH1F("hist_displacement", "Desplazamiento del punto de referencia", 50, 0, 0.015);
 
     // Iterar sobre los archivos
     for (const auto& filename : filenames) {
@@ -114,15 +111,12 @@ int cut_reference_point_displacement_histogram_bg_zh_eeh() {
 
             // Verificar el corte de la masa invariante
             const float mH = 125.0;
-            if (fabs(invariant_mass - mH) <= 30.0) {
+            if (fabs(invariant_mass - mH) < 30.0) {
                 // Aplicar el corte adicional en el MET
-                if (missingEnergy >= 10.0 && missingEnergy <= 150.0) {
+                if (missingEnergy > 10.0 && missingEnergy < 150.0) {
                     // Llenar el histograma con el desplazamiento del punto de referencia de los dos leading jets
                     hist_displacement->Fill(displacements[0]);
                     hist_displacement->Fill(displacements[1]);
-
-                    // Llenar el histograma con la masa invariante
-                    hist_invmass->Fill(invariant_mass);
                 }
             }
         }
@@ -131,11 +125,10 @@ int cut_reference_point_displacement_histogram_bg_zh_eeh() {
         file->Close();
     }
 
-    // Guardar los histogramas en un archivo ROOT
+    // Guardar el histograma en un archivo ROOT
     TFile* output_file = TFile::Open("cut_reference_point_displacement_histogram_bg_zh_eeh.root", "RECREATE");
     if (output_file) {
         hist_displacement->Write();
-        hist_invmass->Write();
         output_file->Close();
     } else {
         cerr << "Error al abrir el archivo de salida" << endl;
@@ -143,7 +136,6 @@ int cut_reference_point_displacement_histogram_bg_zh_eeh() {
 
     // Limpiar la memoria
     delete hist_displacement;
-    delete hist_invmass;
 
     return 0;
 }
